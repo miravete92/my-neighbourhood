@@ -19,7 +19,7 @@ Just open index.html file with your webrowser.
 
 ## Try it
  
-[https://miravete92.github.io/my-neighbourhood/] https://miravete92.github.io/my-neighbourhood/
+[https://miravete92.github.io/my-neighbourhood/](https://miravete92.github.io/my-neighbourhood/)
 
 
 ## APIs Accesed
