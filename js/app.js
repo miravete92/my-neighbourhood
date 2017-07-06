@@ -233,6 +233,10 @@ var ViewModel = function() {
 	this.toogleSidebar = function(){		
 		console.log("click");
 		self.showSidebar(self.showSidebar()?0:1);
+		setTimeout(function(){
+			google.maps.event.trigger(map, 'resize');
+		}, 1000);
+		
 	}
 	this.findPlaces = function(){
 		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat+'%2C%20'+position.lng+'&query='+self.query()+'&intent=checkin&client_id='+client_id+'&client_secret='+client_secret;
