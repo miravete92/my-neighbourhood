@@ -222,8 +222,8 @@ var Place = function(data, map){
 	});
 	this.openInfo = function(){
 		self.infowindow.open(map, self.marker);
-	}
-}
+	};
+};
 var ViewModel = function() {
 	var self = this;
 	this.showSidebar = ko.observable(0);
@@ -237,7 +237,7 @@ var ViewModel = function() {
 			google.maps.event.trigger(map, 'resize');
 		}, 1000);
 		
-	}
+	};
 	this.findPlaces = function(){
 		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat+'%2C%20'+position.lng+'&query='+self.query()+'&intent=checkin&client_id='+client_id+'&client_secret='+client_secret;
 		console.log(url);
@@ -249,15 +249,15 @@ var ViewModel = function() {
 				});
 			} 
 		});
-	}
+	};
 	this.clearMarkers = function(){
 		self.placeList().forEach(function(item){
 			item.marker.setMap(null);
 		});
 		self.placeList.removeAll();
-	}
+	};
 	this.findPlaces();
-}
+};
 ko.applyBindings(new ViewModel());
 
 var map;
