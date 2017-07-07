@@ -7,6 +7,7 @@ var Place = function(data, map){
 	this.name = ko.observable(data.name);
 	this.location = ko.observable({lat: data.location.lat,lng: data.location.lng});
 	this.visible = ko.observable(1);
+	this.address = ko.observable(data.location.formattedAddress);
 
 	var icon = data.categories[0]?data.categories[0].icon.prefix + 'bg_32' + data.categories[0].icon.suffix:'https://ss3.4sqi.net/img/categories_v2/building/default_bg_32.png';
 	this.marker = new google.maps.Marker({
@@ -16,30 +17,11 @@ var Place = function(data, map){
 		animation: google.maps.Animation.DROP,
 		title: self.name()
 	});
-	this.infowindow = new google.maps.InfoWindow({
-		content: '<div class="info-window"><strong>'+data.name+'</strong><br/>'+data.location.address+'</div>'
-	});
-	this.infowindow.addListener('closeclick',function(){
-		self.marker.setAnimation(null);
-		viewModel.currentPlace = null;
-	});
 	this.marker.addListener('click',function(){
-		if (viewModel.currentPlace) {
-			viewModel.currentPlace.infowindow.close();
-			viewModel.currentPlace.marker.setAnimation(null);
-		}
-		self.infowindow.open(map, self.marker);
-		self.marker.setAnimation(google.maps.Animation.BOUNCE);
-		viewModel.currentPlace = self;
+		viewModel.openInfo(self);
 	});
 	this.openInfo = function(){
-		if (viewModel.currentPlace) {
-			viewModel.currentPlace.infowindow.close();
-			viewModel.currentPlace.marker.setAnimation(null);
-		}
-		self.infowindow.open(map, self.marker);
-		self.marker.setAnimation(google.maps.Animation.BOUNCE);
-		viewModel.currentPlace = self;
+		viewModel.openInfo(self);
 	};
 
 };
@@ -70,9 +52,12 @@ var ViewModel = function() {
 	};
 
 	this.findPlaces = function(){
-		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat+'%2C%20'+position.lng+'&q=&intent=checkin&client_id='+client_id+'&client_secret='+client_secret;
+		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat
+			+'%2C%20'+position.lng+'&q=&intent=checkin&client_id='+client_id+'&client_secret='
+			+client_secret;
 		$.getJSON(url, function(data) { 
 			if(data.meta.code==200){
+				console.log(JSON.stringify(data));
 				data.response.venues.forEach(function(locationItem){
 					self.placeList.push(new Place(locationItem, map));
 				});
@@ -94,11 +79,22 @@ var ViewModel = function() {
 			else{
 				item.visible(0);
 				item.marker.setMap(null);
-				item.infowindow.close();
+				self.infowindow.close();
 			}
 		});
 	};
+
+	this.openInfo = function(place){
+		if (self.currentPlace) {
+			self.currentPlace.marker.setAnimation(null);
+		}
+		self.infowindow.setContent('<div class="info-window"><strong>'+place.name()+'</strong><br/>'+place.address()+'</div>');
+		self.infowindow.open(map, place.marker);
+		place.marker.setAnimation(google.maps.Animation.BOUNCE);
+		self.currentPlace = place;
+	};
 };
+
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
@@ -109,6 +105,13 @@ function initMap() {
 			center: position,
 			styles: styles,
 			zoom: 15
+		});
+		viewModel.infowindow = new google.maps.InfoWindow({
+			content: ''
+		});
+		viewModel.infowindow.addListener('closeclick',function(){
+			viewModel.currentPlace.marker.setAnimation(null);
+			viewModel.currentPlace = null;
 		});
 		viewModel.findPlaces();
 	});
