@@ -46,15 +46,15 @@ var ViewModel = function() {
 		self.notifier(1);
 		self.notifierText(message);
 		setTimeout(function(){
-			self.notifier(0);;
+			self.notifier(0);
 		}, 5000);
 		
 	};
 
 	this.findPlaces = function(){
-		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat
-			+'%2C%20'+position.lng+'&q=&intent=checkin&client_id='+client_id+'&client_secret='
-			+client_secret;
+		var url = 'https://api.foursquare.com/v2/venues/search?v=20161016&ll='+position.lat+
+			'%2C%20'+position.lng+'&q=&intent=checkin&client_id='+client_id+'&client_secret='+
+			client_secret;
 		$.getJSON(url, function(data) { 
 			if(data.meta.code==200){
 				console.log(JSON.stringify(data));
