@@ -10,14 +10,17 @@
 <body>
     <aside data-bind="css: { shown: showSidebar() > 0 }">
         <h3>Search locations</h3>
-        <div id="search-box">
-            <input id="search-text" type="text" placeholder="Ex: restaurant, haircut..." data-bind="value: query">
-            <button id="search-btn" type="button" data-bind="click: findPlaces">
-                Filter<img src="img/filter.png" alt="">
-            </button>
-        </div>
+        <form>
+            <div id="search-box">
+                <input id="search-text" type="text" placeholder="Ex: restaurant, haircut..." data-bind="value: query">
+                <button id="search-btn" type="submit" data-bind="click: filterPlaces">
+                    Filter<img src="img/filter.png" alt="">
+                </button>
+            </div>
+        </form>
+        <p>* Search powered by Foursquare</p>
         <ul class="locationList" data-bind="foreach: placeList">
-                <li class="locationItem" data-bind="text: name, click: openInfo"></li>
+                <li class="locationItem" data-bind="text: name, click: openInfo, css: { hidden: visible() == 0 }"></li>
         </ul>
     </aside>
     <main>
@@ -29,28 +32,16 @@
         </header>
         <div id="map">   
         </div>
+        <div class="notifier" data-bind="css: { shown: notifier() > 0 }">
+            <div class="notifierText" data-bind="text: notifierText"></div>
+        </div>
     </main>
-    
-	<!--
-    <ul data-bind="foreach: catList">
-        <li data-bind="text: name, click: $parent.setCurrentCat"></li>
-    </ul>
-    <div data-bind="with: currentCat">
-
-        <h2 data-bind="text: name"></h2>
-        <div data-bind="text: clickCount"></div>
-        <h3 data-bind="text: level"></h3>
-        <img src="" alt="cute cat" data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}">
-        <ul data-bind="foreach: nicknames">
-            <li data-bind="text: $data"></li>
-        </ul>
-
-    </div>-->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+	
+    <script src="js/lib/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/app.js"></script>
 	<script async defer 
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAR2-xZYnT-_e-CPscJCiLEdiiORFLwsjo&v=3&callback=initMap">
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAR2-xZYnT-_e-CPscJCiLEdiiORFLwsjo&v=3&callback=initMap" onerror="handleAPIError()">
     </script>
 </body>
 </html>

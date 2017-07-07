@@ -93,6 +93,9 @@ header #showSidebar img{
 	margin:0;
 	cursor: pointer;
 }
+.locationItem.hidden{
+	display: none;
+}
 .locationItem:hover{
 	background-color: #555;
 }
@@ -103,4 +106,29 @@ header #showSidebar img{
 
 .info-window{
 	color: black;
+}
+
+.notifier {
+	background-color: red;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 0 30px;
+}
+.notifier{
+	background-color: red;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: -100%;
+	padding: 10px 30px;
+	transition: bottom 1s;
+}
+.notifier.shown{
+	bottom: 0;
+	
+}
+.notifierText{
+	font-weight: bold;
 }
