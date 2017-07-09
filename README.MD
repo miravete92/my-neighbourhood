@@ -15,7 +15,16 @@ Responsive design. Try it in a mobile phone!
 
 ## How to run it
 
-Just open index.html file with your webrowser.
+1. Run a local server.
+
++ You need python 2.x or 3.x
++ Open terminal or console
++ Make sure you are on the same directory of this file
++ Execute *python -m SimpleHTTPServer 8080* for python 2
++ Execute *python -m http.server 8080* for python 3
+
+
+2. Just open your webrowser and point to http://localhost:8080
 
 ## Try it
  
